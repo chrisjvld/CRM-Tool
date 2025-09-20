@@ -14,15 +14,15 @@ export default function NavBar() {
   }
 
   return (
-    <header className="bg-white border-b">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-        <Link href="/dashboard" className="font-semibold">CRM</Link>
-        <nav className="flex items-center gap-3 text-sm">
-          <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-          <Link href="/add-lead" className="hover:underline">Add Lead</Link>
+    <header className="bg-gray-800 border-b border-gray-700">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6">
+        <Link href="/dashboard" className="text-xl font-bold text-white">CRM</Link>
+        <nav className="flex items-center gap-6 text-sm">
+          <Link href="/dashboard" className="text-gray-300 hover:text-white transition-colors">Dashboard</Link>
+          <Link href="/add-lead" className="text-gray-300 hover:text-white transition-colors">Add Lead</Link>
         </nav>
         <div className="ml-auto">
-          <button onClick={handleLogout} className="text-sm text-gray-700 hover:text-black">Log out</button>
+          <button onClick={handleLogout} className="text-sm text-gray-300 hover:text-white transition-colors">Log out</button>
         </div>
       </div>
     </header>
