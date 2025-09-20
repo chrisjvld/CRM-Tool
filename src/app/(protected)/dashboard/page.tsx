@@ -1,5 +1,6 @@
 "use client";
 
+// Updated styling - force rebuild
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { getSupabase } from "@/lib/supabaseClient";
