@@ -25,63 +25,57 @@ NEXT_PUBLIC_SUPABASE_URL=your-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
 ```
 
-### Supabase SQL (run in SQL editor)
+### Supabase Setup
 
-```sql
--- Enable pgcrypto for gen_random_uuid
-create extension if not exists pgcrypto;
+1. **Authentication**: Enable email/password authentication in Supabase Auth settings
+2. **Database**: Run the SQL schema (see below) in the Supabase SQL editor
 
--- enum for lead status
-create type lead_status as enum ('new','contacted','replied','demo_booked','closed');
+### Database Schema
 
--- leads table
-create table if not exists leads (
-  id uuid primary key default gen_random_uuid(),
-  name text,
-  business text,
-  instagram_handle text,
-  email text,
-  status lead_status not null default 'new',
-  notes text,
-  date_added timestamp default now()
-);
+**Option 1: Quick Setup (Demo-friendly)**
+Run the basic schema in `supabase-basic.sql` for a simple multi-user setup.
 
--- Optional reminders table
-create table if not exists reminders (
-  id uuid primary key default gen_random_uuid(),
-  lead_id uuid references leads(id) on delete cascade,
-  reminder_date timestamp not null,
-  reminder_text text
-);
+**Option 2: Full Multi-User Setup (Recommended)**
+Run the complete schema in `supabase-schema.sql` for proper user isolation and data security.
 
--- Row Level Security
-alter table leads enable row level security;
-alter table reminders enable row level security;
+The complete schema includes:
+- User profiles linked to Supabase Auth
+- User-isolated leads, reminders, and tags
+- Automatic user profile creation on signup
+- Row Level Security (RLS) policies
+- Performance indexes
 
--- Policies: demo-friendly (any authenticated user can read/write)
-create policy "leads read" on leads for select to authenticated using (true);
-create policy "leads insert" on leads for insert to authenticated with check (true);
-create policy "leads update" on leads for update to authenticated using (true);
-create policy "leads delete" on leads for delete to authenticated using (true);
+### Features
 
-create policy "reminders read" on reminders for select to authenticated using (true);
-create policy "reminders insert" on reminders for insert to authenticated with check (true);
-create policy "reminders update" on reminders for update to authenticated using (true);
-create policy "reminders delete" on reminders for delete to authenticated using (true);
-```
+- **Authentication**: Sign up and sign in with email/password
+- **Dashboard**: View, search, sort, and manage leads
+- **Lead Management**: Add, edit, and update lead status and notes
+- **Search**: Filter leads by name, business, email, or Instagram handle
+- **Export**: Download leads as CSV
+- **Protected Routes**: Authentication required for all CRM features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/` - Redirects to login
+- `/login` - Sign in page
+- `/signup` - Create new account
+- `/dashboard` - Main leads table with search and export
+- `/add-lead` - Form to add new leads
+- `/lead/[id]` - Detailed lead view and editing
+
+### Tech Stack
+
+- **Frontend**: Next.js 15, React, TailwindCSS
+- **Backend**: Supabase (PostgreSQL + Auth + API)
+- **Authentication**: Supabase Auth with email/password
+- **Database**: PostgreSQL with Row Level Security
+- **Performance**: Vercel Speed Insights
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [TailwindCSS Documentation](https://tailwindcss.com/docs)
 
 ## Deploy on Vercel
 
