@@ -17,7 +17,17 @@ export default function AddLeadPage() {
     setLoading(true);
     setError(null);
     const supabase = getSupabase();
+    
+    // Get the current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setError("You must be logged in to add a lead");
+      setLoading(false);
+      return;
+    }
+
     const { error: insertError } = await supabase.from("leads").insert({
+      user_id: user.id,
       name: formData.get("name") as string,
       business: (formData.get("business") as string) || null,
       instagram_handle: (formData.get("instagram") as string) || null,
