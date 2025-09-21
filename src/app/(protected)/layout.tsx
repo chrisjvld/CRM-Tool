@@ -33,9 +33,9 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
   if (checking) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
       <NavBar />
-      <main>{children}</main>
+      <main className="text-white">{children}</main>
     </div>
   );
 }
